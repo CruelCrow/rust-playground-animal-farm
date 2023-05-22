@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Animal farm</title>
+</head>
+
+<body>
+
+  <script>
+
+    let socket = new WebSocket("ws://127.0.0.1:8081");
+    socket.onopen = function(e) {
+      console.log("[open] Connection established");
+      console.log("Sending to server");
+    };
+    socket.onmessage = function(event) {
+      console.log(`[message] Data received from server: ${event.data}`);
+      if (event.data.length > 0) {
+        var textarea = document.getElementById('animal');
+        textarea.value += `${event.data}\n`;
+        textarea.scrollTop = textarea.scrollHeight;
+      }
+    };
+
+    function changeAnimal(animal) {
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", `/animal:${animal}`, true);
+      xhr.send("");
+    }
+
+  </script>
+
+  <div id="animals">
+  </div>
+
+  <br />
+
+  <textarea id="animal" name="animal" rows="10" cols="50"></textarea>
+
+  <script>
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `/animals.json`, true);
+    xhr.send();
+    xhr.onload  = function(res) {
+      const animals = JSON.parse(xhr.response);
+      console.log(animals);
+
+      for (const [key, value] of Object.entries(animals)) {
+        console.log(`${key}: ${value}`);
+        const button = document.createElement('button');
+        button.innerText = key;
+        button.onclick = function() {
+          changeAnimal(key);
+        };
+        document.getElementById('animals').appendChild(button);
+      }
+    };
+  </script>
+</body>
+
+</html>

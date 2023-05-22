@@ -1,0 +1,6 @@
+{
+    "Cat": ["PRRRR", "MEOW", "HISS"],
+    "Dog": ["WOOF", "ARF", "RUFF"],
+    "Cow": ["MOO", "MOO", "MOO"],
+    "Developer": ["It works on my computer", "It's not a bug", "What's for lunch?"]
+}
